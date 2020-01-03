@@ -28,6 +28,9 @@ public class ArrayList<E> {
 	 * 清除所有元素
 	 */
 	public void clear() {
+		for (int i = 0; i < size; i++) {
+			elements[i] = null;
+		}
 		size = 0;
 	}
 
@@ -61,7 +64,7 @@ public class ArrayList<E> {
 	 * @param element
 	 */
 	public void add(E element) {
-		elements[size++] = element;
+		add(size, element);
 	}
 
 	/**
@@ -70,9 +73,7 @@ public class ArrayList<E> {
 	 * @return
 	 */
 	public E get(int index) {
-		if (index >= size) {
-			throw new IndexOutOfBoundsException("index:"+index+",size"+size);
-		}
+		rangeCheck(index);
 		return elements[index];
 	}
 
@@ -83,9 +84,7 @@ public class ArrayList<E> {
 	 * @return 原来的元素ֵ
 	 */
 	public E set(int index, E element) {
-		if (index >= size) {
-			throw new IndexOutOfBoundsException("index:"+index+",size"+size);
-		}
+		rangeCheck(index);
 		E old = elements[index];
 		elements[index] = element;
 		return old;
@@ -97,6 +96,15 @@ public class ArrayList<E> {
 	 * @param element
 	 */
 	public void add(int index, E element) {
+		rangeCheckAdd(index);
+		
+		ensureCapacity(index + 1);
+		
+		for (int i = size - 1; i > index; i--) {
+			elements[i] = elements[i - 1];
+		}
+		elements[index] = element;
+		size++;
 	}
 
 	/**
@@ -120,10 +128,58 @@ public class ArrayList<E> {
 			}
 		} else {
 			for(int index = 0; index < size; index++) {
-				if (elements[index] == element) return index;
+				if (element.equals(elements[index])) return index;
 			}
 		}
 		return ELEMENT_NOT_FOUND;
 	}
+	
+	private void outOfBounds(int index) {
+		throw new IndexOutOfBoundsException("index:"+index+",size"+size);
+	}
+	
+	private void rangeCheck(int index) {
+		if (index < 0 || index >= size) {
+			outOfBounds(index);
+		}
+	}
+	
+	private void rangeCheckAdd(int index) {
+		if (index < 0 || index > size) {
+			outOfBounds(index);
+		}
+	}
+	
+	/**
+	   * 保证要有capacity的容量
+	 * @param capacity
+	 */
+	private void ensureCapacity(int capacity) {
+		int oldCapacity = elements.length;
+		if (oldCapacity > capacity) return;
+		
+		int newCapacity = oldCapacity + (oldCapacity >> 1);
+		E[] newElements = (E[]) new Object[newCapacity];
+		for (int i = 0; i < size; i++) {
+			newElements[i] = elements[i];
+		}
+		elements = newElements;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("size=").append(size).append(", [");
+		for (int i = 0; i < size; i++) {
+			if (i != 0) {
+				stringBuilder.append(",");
+			}
+			stringBuilder.append(elements[i]);
+		}
+		stringBuilder.append("]");
+		return stringBuilder.toString();
+	}
+	
+	
 
 }
