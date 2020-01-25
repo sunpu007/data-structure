@@ -113,7 +113,12 @@ public class ArrayList<E> {
 	 * @return
 	 */
 	public E remove(int index) {
-		return null;
+		rangeCheck(index);
+		E oldElmE = elements[index];
+		for (int i = size; i > index; i--) {
+			elements[i] = elements[i - 1];
+		}
+		return oldElmE;
 	}
 
 	/**
