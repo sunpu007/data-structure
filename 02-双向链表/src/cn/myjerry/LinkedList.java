@@ -14,7 +14,7 @@ public class LinkedList<E> {
    */
   private int size;
 
-  public Boolean isEmity() {
+  public Boolean isEmpty() {
     return size == 0;
   }
 
