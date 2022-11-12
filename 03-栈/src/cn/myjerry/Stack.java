@@ -1,5 +1,7 @@
 package cn.myjerry;
 
+import java.util.ArrayList;
+
 public class Stack<E> {
   private ArrayList<E> list;
 
