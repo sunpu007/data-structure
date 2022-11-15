@@ -1,13 +1,13 @@
 package cn.myjerry;
 
 /**
- * 循环队列
+ * 双端循环队列
  * @author Jerry
  * @param <E>
  */
 @SuppressWarnings("all")
-public class CircleQueue<E> {
-
+public class CircleDeque<E> {
+	
 	private static final int DEFAULT_CAPACITY = 10;
 
 	// 记录队头索引
@@ -30,22 +30,41 @@ public class CircleQueue<E> {
 	public boolean isEmpty() {
 		return size == 0;
 	}
-
-	// 入队
-	public void enQueue(E element) {
+	
+	// 从队头入队
+	public void enQueueFront(E element) {
 		ensureCapacity(size + 1);
-		elements[index(size)] = element;
+		front = index(-1);
+		elements[front] = element;
 		size++;
-	};
+	}
 
-	// 出队
-	public E deQueue() {
+	// 从队头出队
+	public E deQueueFront() {
 		E element = elements[front];
 		elements[front] = null;
 		front = index(1);
 		size--;
 		return element;
 	}
+	
+	/**
+	 * 从队尾出队
+	 */
+	public E deQueueRear() {
+		int rearIndex = index(size - 1);
+		E rear = elements[rearIndex];
+		elements[rearIndex] = null;
+		size--;
+		return rear;
+	}
+
+	// 从队尾入队
+	public void enQueueRear(E element) {
+		ensureCapacity(size + 1);
+		elements[index(size)] = element;
+		size++;
+	};
 
 	// 查看队头元素
 	public E front() {
@@ -91,4 +110,5 @@ public class CircleQueue<E> {
 		string.append("]");
 		return string.toString();
 	}
+
 }
