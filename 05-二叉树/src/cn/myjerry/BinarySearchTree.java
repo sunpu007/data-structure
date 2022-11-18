@@ -1,6 +1,10 @@
 package cn.myjerry;
 
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import cn.myjerry.printer.BinaryTreeInfo;
 
 /**
  * 二叉搜索树
@@ -8,7 +12,7 @@ import java.util.Comparator;
  *
  */
 @SuppressWarnings("all")
-public class BinarySearchTree<E> {
+public class BinarySearchTree<E> implements BinaryTreeInfo {
 	private int size;
 	private Node<E> root;
 	private Comparator<E> comparator;
@@ -98,6 +102,70 @@ public class BinarySearchTree<E> {
 	}
 	
 	/**
+	 * 先序遍历
+	 */
+	public void preorder() {
+		this.preorder(root);
+	}
+	private void preorder(Node<E> node) {
+		if (node == null) return;
+		
+		System.out.println(node.element);
+		preorder(node.left);
+		preorder(node.right);
+	}
+	
+	/**
+	 * 中序遍历
+	 */
+	public void inorder() {
+		this.inorder(root);
+	}
+	private void inorder(Node<E> node) {
+		if (node == null) return;
+		
+		inorder(node.left);
+		System.out.println(node.element);
+		inorder(node.right);
+	}
+
+	/**
+	 * 后续遍历
+	 */
+	public void postorder() {
+		this.postorder(root);
+	}
+	private void postorder(Node<E> node) {
+		if (node == null) return;
+		
+		postorder(node.left);
+		postorder(node.right);
+		System.out.println(node.element);
+	}
+	
+	/**
+	 * 层序遍历
+	 */
+	public void levelOrder() {
+		if (root == null) return;
+		
+		Queue<Node<E>> queue = new LinkedList<>();
+		queue.offer(root);
+		
+		while(!queue.isEmpty()) {
+			Node<E> node = queue.poll();
+			System.out.println(node.element);
+			
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+		}
+	}
+	
+	/**
 	 * @return 返回值等于0，代表e1和e2相等；返回值大于0，代表e1大于e2；返回值小于于0，代表e1小于e2
 	 */
 	private int compare(E e1, E e2) {
@@ -124,6 +192,27 @@ public class BinarySearchTree<E> {
 			this.element = element;
 			this.parent = parent;
 		}
+	}
+
+
+	@Override
+	public Object root() {
+		return root;
+	}
+
+	@Override
+	public Object left(Object node) {
+		return ((Node<E>)node).left;
+	}
+
+	@Override
+	public Object right(Object node) {
+		return ((Node<E>)node).right;
+	}
+
+	@Override
+	public Object string(Object node) {
+		return ((Node<E>)node).element;
 	}
 	
 }
