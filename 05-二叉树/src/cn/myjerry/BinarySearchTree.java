@@ -100,61 +100,126 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		}
 		return flag;
 	}
-	
+
+//	/**
+//	 * 先序遍历
+//	 */
+//	public void preorder() {
+//		this.preorder(root);
+//	}
+//	private void preorder(Node<E> node) {
+//		if (node == null) return;
+//		
+//		System.out.println(node.element);
+//		preorder(node.left);
+//		preorder(node.right);
+//	}
 	/**
-	 * 先序遍历
+	 * 先序遍历(增强遍历)
 	 */
-	public void preorder() {
-		this.preorder(root);
+	public void preorder(Visitor<E> visitor) {
+		if (visitor == null) return;
+		this.preorder(root, visitor);
 	}
-	private void preorder(Node<E> node) {
-		if (node == null) return;
+	private void preorder(Node<E> node, Visitor<E> visitor) {
+		if (node == null || visitor.stop) return;
 		
-		System.out.println(node.element);
-		preorder(node.left);
-		preorder(node.right);
+		visitor.stop = visitor.visit(node.element);
+		preorder(node.left, visitor);
+		preorder(node.right, visitor);
 	}
 	
+//	/**
+//	 * 中序遍历
+//	 */
+//	public void inorder() {
+//		this.inorder(root);
+//	}
+//	private void inorder(Node<E> node) {
+//		if (node == null) return;
+//		
+//		inorder(node.left);
+//		System.out.println(node.element);
+//		inorder(node.right);
+//	}
 	/**
-	 * 中序遍历
+	 * 中序遍历(增强遍历)
 	 */
-	public void inorder() {
-		this.inorder(root);
+	public void inorder(Visitor<E> visitor) {
+		if (visitor == null) return;
+		this.inorder(root, visitor);
 	}
-	private void inorder(Node<E> node) {
-		if (node == null) return;
+	private void inorder(Node<E> node, Visitor<E> visitor) {
+		if (node == null || visitor.stop) return;
 		
-		inorder(node.left);
-		System.out.println(node.element);
-		inorder(node.right);
+		inorder(node.left, visitor);
+		if (visitor.stop) return;
+		visitor.stop = visitor.visit(node.element);
+		inorder(node.right, visitor);
 	}
 
+//	/**
+//	 * 后续遍历
+//	 */
+//	public void postorder() {
+//		this.postorder(root);
+//	}
+//	private void postorder(Node<E> node) {
+//		if (node == null) return;
+//		
+//		postorder(node.left);
+//		postorder(node.right);
+//		System.out.println(node.element);
+//	}
 	/**
-	 * 后续遍历
+	 * 后续遍历(增强遍历)
 	 */
-	public void postorder() {
-		this.postorder(root);
+	public void postorder(Visitor<E> visitor) {
+		if (visitor == null) return;
+		this.postorder(root, visitor);
 	}
-	private void postorder(Node<E> node) {
-		if (node == null) return;
+	private void postorder(Node<E> node, Visitor<E> visitor) {
+		if (node == null || visitor.stop) return;
 		
-		postorder(node.left);
-		postorder(node.right);
+		postorder(node.left, visitor);
+		postorder(node.right, visitor);
+		if (visitor.stop) return;
 		System.out.println(node.element);
 	}
-	
+
+//	/**
+//	 * 层序遍历
+//	 */
+//	public void levelOrder() {
+//		if (root == null) return;
+//		
+//		Queue<Node<E>> queue = new LinkedList<>();
+//		queue.offer(root);
+//		
+//		while(!queue.isEmpty()) {
+//			Node<E> node = queue.poll();
+//			System.out.println(node.element);
+//			
+//			if (node.left != null) {
+//				queue.offer(node.left);
+//			}
+//			if (node.right != null) {
+//				queue.offer(node.right);
+//			}
+//		}
+//	}
 	/**
 	 * 层序遍历
 	 */
-	public void levelOrder() {
-		if (root == null) return;
+	public void levelOrder(Visitor<E> visitor) {
+		if (root == null || visitor == null) return;
 		
 		Queue<Node<E>> queue = new LinkedList<>();
 		queue.offer(root);
 		
 		while(!queue.isEmpty()) {
 			Node<E> node = queue.poll();
-			System.out.println(node.element);
+			if (visitor.visit(node.element)) return;
 			
 			if (node.left != null) {
 				queue.offer(node.left);
@@ -179,6 +244,11 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		if (element == null) {
 			throw new IllegalArgumentException("element must not be null");
 		}
+	}
+	
+	public abstract class Visitor<E>{
+		boolean stop;
+		public abstract boolean visit(E element);
 	}
 	
 	
