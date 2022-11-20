@@ -246,13 +246,13 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		}
 	}
 	
-	public abstract class Visitor<E>{
+	public static abstract class Visitor<E>{
 		boolean stop;
 		public abstract boolean visit(E element);
 	}
 	
 	
-	private class Node<E> {
+	private static class Node<E> {
 		E element;
 		Node<E> parent;
 		Node<E> left;

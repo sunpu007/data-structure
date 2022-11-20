@@ -1,5 +1,6 @@
 package cn.myjerry;
 
+import cn.myjerry.BinarySearchTree.Visitor;
 import cn.myjerry.printer.BinaryTrees;
 
 public class Main {
@@ -16,7 +17,13 @@ public class Main {
 		bst1.add(11);
 		bst1.add(99);
 		BinaryTrees.println(bst1);
-		bst1.levelOrder();
+		bst1.levelOrder(new Visitor<Integer>() {
+			
+			@Override
+			public boolean visit(Integer element) {
+				return false;
+			}
+		});
 		
 
 //		BinarySearchTree<Integer> bst2 = new BinarySearchTree<>(new Comparator<Integer>() {
