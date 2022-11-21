@@ -331,6 +331,47 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 	}
 	
 	/**
+	 * 反转二叉树(递归方法)
+	 */
+//	public Node<E> reverse() {
+//		return reverse(root);
+//	}
+//	private Node<E> reverse(Node<E> node) {
+//		if (node == null) return node;
+//		
+//		Node<E> tempNode = node.left;
+//		node.left = node.right;
+//		node.right = tempNode;
+//		
+//		return node;
+//	}
+	
+	/**
+	 * 反转二叉树(层级遍历方法)
+	 */
+	public Node<E> reverse() {
+		if (root == null) return root;
+		
+		Queue<Node<E>> queue = new LinkedList<>();
+		queue.offer(root);
+		
+		while(!queue.isEmpty()) {
+			Node<E> node = queue.poll();
+			Node<E> tempNode = node.left;
+			node.left = node.right;
+			node.right = tempNode;
+			
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+		}
+		return root;
+	}
+	
+	/**
 	 * @return 返回值等于0，代表e1和e2相等；返回值大于0，代表e1大于e2；返回值小于于0，代表e1小于e2
 	 */
 	private int compare(E e1, E e2) {
