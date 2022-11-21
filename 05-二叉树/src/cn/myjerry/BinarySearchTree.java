@@ -1,5 +1,6 @@
 package cn.myjerry;
 
+import java.awt.PageAttributes.OriginType;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -209,7 +210,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 //		}
 //	}
 	/**
-	 * 层序遍历
+	 * 层序遍历(增强遍历)
 	 */
 	public void levelOrder(Visitor<E> visitor) {
 		if (root == null || visitor == null) return;
@@ -228,6 +229,105 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 				queue.offer(node.right);
 			}
 		}
+	}
+	
+	/**
+	 * 判断是否为完全二叉树
+	 * @return
+	 */
+//	public boolean isComplete() {
+//		if (root == null) return false;
+//		
+//		Queue<Node<E>> queue = new LinkedList<>();
+//		queue.offer(root);
+//		
+//		boolean leaf = false;
+//		while(!queue.isEmpty()) {
+//			Node<E> node = queue.poll();
+//			
+//			if (leaf && !node.isLeaf()) return false;
+//			
+//			if (node.hasTwoChildren()) {
+//				queue.offer(node.left);
+//				queue.offer(node.right);
+//			} else if (node.left == null && node.right != null) {
+//				return false;
+//			} else {
+//				leaf = true;
+//				if (node.left != null) {
+//					queue.offer(node.left);
+//				}
+//			}
+//		}
+//		return true;
+//	}
+	
+	/**
+	 * 判断是否为完全二叉树
+	 * @return
+	 */
+	public boolean isComplete() {
+		if (root == null) return false;
+		
+		Queue<Node<E>> queue = new LinkedList<>();
+		queue.offer(root);
+		
+		boolean leaf = false;
+		while(!queue.isEmpty()) {
+			Node<E> node = queue.poll();
+			
+			if (node.left != null) {
+				queue.offer(node.left);
+			} else if (node.right != null) {
+				return false;
+			}
+			
+			if (node.right != null) {
+				queue.offer(node.right);
+			} else {
+				leaf = true;
+			}
+		}
+		return true;
+	}
+	
+	public int height() {
+		if (root == null) return 0;
+		
+		Queue<Node<E>> queue = new LinkedList<>();
+		queue.offer(root);
+		
+		int height = 0;
+		int levelSize = 1;
+		
+		while(!queue.isEmpty()) {
+			Node<E> node = queue.poll();
+			levelSize--;
+			
+			if (node.left != null) {
+				queue.offer(node.left);
+			}
+			if (node.right != null) {
+				queue.offer(node.right);
+			}
+			if (levelSize == 0) {
+				levelSize = queue.size();
+				height++;
+			}
+		}
+		return height;
+	}
+	
+	/**
+	 * 获取树的高度(递归实现)
+	 */
+	public int heightRecursive() {
+		if (root == null) return 0;
+		return heightRecursive(root);
+	}
+	private int heightRecursive(Node<E> node) {
+		if (node == null) return 0;
+		return 1 + Math.max(heightRecursive(node.left), heightRecursive(node.right));
 	}
 	
 	/**
@@ -261,6 +361,14 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		public Node(E element, Node<E> parent) {
 			this.element = element;
 			this.parent = parent;
+		}
+		
+		public boolean isLeaf() {
+			return left == null && right == null;
+		}
+		
+		public boolean hasTwoChildren() {
+			return left != null && right != null;
 		}
 	}
 

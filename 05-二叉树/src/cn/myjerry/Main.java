@@ -1,29 +1,25 @@
 package cn.myjerry;
 
-import cn.myjerry.BinarySearchTree.Visitor;
+
+//import cn.myjerry.BinarySearchTree.Visitor;
 import cn.myjerry.printer.BinaryTrees;
 
 public class Main {
 
 	public static void main(String[] args) {
-		BinarySearchTree<Integer> bst1 = new BinarySearchTree<>();
-		bst1.add(66);
-		bst1.add(88);
-		bst1.add(77);
-		bst1.add(44);
-		bst1.add(22);
-		bst1.add(33);
-		bst1.add(55);
-		bst1.add(11);
-		bst1.add(99);
-		BinaryTrees.println(bst1);
-		bst1.levelOrder(new Visitor<Integer>() {
-			
-			@Override
-			public boolean visit(Integer element) {
-				return false;
-			}
-		});
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		for (int i = 0; i < 30; i++) {
+			bst.add((int)(Math.random() * 1000));
+		}
+		BinaryTrees.println(bst);
+		System.out.println(bst.height());
+//		bst1.levelOrder(new Visitor<Integer>() {
+//			
+//			@Override
+//			public boolean visit(Integer element) {
+//				return false;
+//			}
+//		});
 		
 
 //		BinarySearchTree<Integer> bst2 = new BinarySearchTree<>(new Comparator<Integer>() {
