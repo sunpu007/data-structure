@@ -102,21 +102,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		return flag;
 	}
 
-//	/**
-//	 * 先序遍历
-//	 */
-//	public void preorder() {
-//		this.preorder(root);
-//	}
-//	private void preorder(Node<E> node) {
-//		if (node == null) return;
-//		
-//		System.out.println(node.element);
-//		preorder(node.left);
-//		preorder(node.right);
-//	}
 	/**
-	 * 先序遍历(增强遍历)
+	 * 先序遍历
 	 */
 	public void preorder(Visitor<E> visitor) {
 		if (visitor == null) return;
@@ -129,22 +116,9 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		preorder(node.left, visitor);
 		preorder(node.right, visitor);
 	}
-	
-//	/**
-//	 * 中序遍历
-//	 */
-//	public void inorder() {
-//		this.inorder(root);
-//	}
-//	private void inorder(Node<E> node) {
-//		if (node == null) return;
-//		
-//		inorder(node.left);
-//		System.out.println(node.element);
-//		inorder(node.right);
-//	}
+
 	/**
-	 * 中序遍历(增强遍历)
+	 * 中序遍历
 	 */
 	public void inorder(Visitor<E> visitor) {
 		if (visitor == null) return;
@@ -159,21 +133,8 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		inorder(node.right, visitor);
 	}
 
-//	/**
-//	 * 后续遍历
-//	 */
-//	public void postorder() {
-//		this.postorder(root);
-//	}
-//	private void postorder(Node<E> node) {
-//		if (node == null) return;
-//		
-//		postorder(node.left);
-//		postorder(node.right);
-//		System.out.println(node.element);
-//	}
 	/**
-	 * 后续遍历(增强遍历)
+	 * 后续遍历
 	 */
 	public void postorder(Visitor<E> visitor) {
 		if (visitor == null) return;
@@ -188,27 +149,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 		System.out.println(node.element);
 	}
 
-//	/**
-//	 * 层序遍历
-//	 */
-//	public void levelOrder() {
-//		if (root == null) return;
-//		
-//		Queue<Node<E>> queue = new LinkedList<>();
-//		queue.offer(root);
-//		
-//		while(!queue.isEmpty()) {
-//			Node<E> node = queue.poll();
-//			System.out.println(node.element);
-//			
-//			if (node.left != null) {
-//				queue.offer(node.left);
-//			}
-//			if (node.right != null) {
-//				queue.offer(node.right);
-//			}
-//		}
-//	}
 	/**
 	 * 层序遍历(增强遍历)
 	 */
@@ -333,18 +273,19 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 	/**
 	 * 反转二叉树(递归方法)
 	 */
-//	public Node<E> reverse() {
-//		return reverse(root);
-//	}
-//	private Node<E> reverse(Node<E> node) {
-//		if (node == null) return node;
-//		
-//		Node<E> tempNode = node.left;
-//		node.left = node.right;
-//		node.right = tempNode;
-//		
-//		return node;
-//	}
+	public Node<E> reverseRecursive() {
+		return reverseRecursive(root);
+	}
+	private Node<E> reverseRecursive(Node<E> node) {
+		if (node == null) return node;
+		
+		Node<E> tempNode = node.left;
+		node.left = node.right;
+		node.right = tempNode;
+		reverseRecursive(node.left);
+		reverseRecursive(node.right);
+		return node;
+	}
 	
 	/**
 	 * 反转二叉树(层级遍历方法)
